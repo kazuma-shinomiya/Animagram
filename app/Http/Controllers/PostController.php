@@ -15,7 +15,7 @@ class PostController extends Controller
     }
 
     public function index(Request $request){
-        $posts = Post::orderBy('created_at', 'asc')
+        $posts = Post::orderBy('created_at', 'desc')
                     ->categoryAt($request->category)
                     ->keywordAt($request->keyword)
                     ->paginate(6);
