@@ -73,6 +73,12 @@
                                 </div>
                             </li>
                         @endguest
+                        <li>
+                            <form class="form-inline" method="GET" action="{{ route('posts.index') }}">
+                                <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" name="keyword">
+                                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                            </form>
+                        </li>
                     </ul>
                 </div>
             </div>
