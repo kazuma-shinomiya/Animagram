@@ -36,11 +36,20 @@ class Post extends Model
     }
 
     public function scopeCategoryAt($query, $category_id){
-        if (empty($category_id)) {
+        if(empty($category_id)){
             return;
         }
         
         return $query->where('category_id', $category_id);
     }
+    
+    public function scopeKeywordAt($query, $keyword){
+        if(empty($keyword)){
+            return;
+        }
+        
+        
+        return $query->where('body', 'LIKE', "%$keyword%");
+    } 
 
 }

@@ -15,9 +15,14 @@ class PostController extends Controller
     }
 
     public function index(Request $request){
-        $posts = Post::orderBy('created_at', 'asc')->categoryAt($request->category)->paginate(6);
-        $param = array('category' => $request->category);
-        return view('posts.index', compact('posts', 'param'));
+        $posts = Post::orderBy('created_at', 'asc')
+                    ->categoryAt($request->category)
+                    ->keywordAt($request->keyword)
+                    ->paginate(6);
+        // $param = array('category' => $request->category,
+        //               'keyword' => $request->keyword
+        //                 );
+        return view('posts.index', compact('posts'));
     }
 
     public function create(){

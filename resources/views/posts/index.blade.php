@@ -14,6 +14,6 @@
         </div>
       </div>
     </div>
-    {{ $posts->appends($param)->links() }}
+    {{ $posts->appends(request()->input())->links() }}
   </div>
 @endsection
