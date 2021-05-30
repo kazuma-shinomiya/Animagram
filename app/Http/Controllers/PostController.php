@@ -19,9 +19,6 @@ class PostController extends Controller
                     ->categoryAt($request->category)
                     ->keywordAt($request->keyword)
                     ->paginate(6);
-        // $param = array('category' => $request->category,
-        //               'keyword' => $request->keyword
-        //                 );
         return view('posts.index', compact('posts'));
     }
 
@@ -46,11 +43,19 @@ class PostController extends Controller
     }
 
     public function update(PostRequest $request, Post $post){
-        $post->fill($request['post'])->save();
+        $post->fill($request['post']);
+        if(!empty($request->image)){
+            $image = $request->file('image'); 
+            $path = Storage::disk('s3')->putFile('animals', $image, 'public');
+            $post->image_url = Storage::disk('s3')->url($path);
+        }
+        $post->save();
         return redirect()->route('posts.index');
     }
 
     public function destroy(Post $post){
+        $image_url_s3 = str_replace('https://animal-blog.s3.ap-northeast-1.amazonaws.com/', '', $post->image_url);
+        Storage::disk('s3')->delete($image_url_s3);
         $post->delete();
         return redirect()->route('posts.index');
     }

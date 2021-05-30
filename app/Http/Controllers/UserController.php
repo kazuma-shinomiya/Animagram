@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Http\Requests\UserRequest;
 use Illuminate\Http\Request;
+use Storage;
 
 class UserController extends Controller
 {
@@ -11,6 +13,24 @@ class UserController extends Controller
         $user = User::where('name', $name)->first();
         $posts = $user->posts->sortByDesc('created_at');
         return view('users.show', compact('user', 'posts'));
+    }
+    
+    public function edit(string $name){
+        $user = User::where('name', $name)->first();
+        return view('users.edit', compact('user'));
+    }
+    
+    public function update(UserRequest $request, string $name){
+        $user = User::where('name', $name)->first();
+        $user->fill($request->all());
+        $user->name = $request->name;
+        if(!empty($request->image)){
+            $image = $request->file('image'); 
+            $path = Storage::disk('s3')->putFile('users', $image, 'public');
+            $user->image_url = Storage::disk('s3')->url($path);
+        }
+        $user->save();
+        return redirect()->route('users.show', $user->name);
     }
 
     public function likes(string $name){

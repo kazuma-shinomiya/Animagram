@@ -1,8 +1,12 @@
 <div class="card mt-4">
   <div class="row justify-content-between">
     <div class="col-4">
-      <a href="{{ route('users.show', ['name' => $post->user->name])}}" class="text-dark m-3">
-        <i class="far fa-user-circle fa-3x"></i>
+      <a href="{{ route('users.show', ['name' => $post->user->name])}}" class="text-dark">
+        @if($post->user->image_url == null)
+          <i class="far fa-user-circle fa-3x m-3"></i>
+        @else
+          <img src="{{ $post->user->image_url }}"　class="rounded-circle m-3" width="40px" height="40px">
+        @endif
         {{ $post->user->name }}
       </a>
     </div>
