@@ -1,16 +1,16 @@
 <div class="media my-5">
-  <a href="#" class="mr-3">
-    <img src="" alt="メディアの画像">
-  </a>
-  <div class="media-body">
-    <h5 class="mt-0">{{ $comment->user->name }}</h5>
-    {{ $comment->comment }}
+  @if($comment->user->image_url == null)
+    <i class="far fa-user-circle fa-3x"></i>
+  @else
+    <img src="{{ $comment->user->image_url }}"　class="rounded-circle" width="50px" height="50px">
+  @endif
+  <div class="media-body ml-4">
+    <a class="mt-0 h2 text-dark" href="{{ route('users.show', ['name' => $comment->user->name])}}">{{ $comment->user->name }}</a>
+    <p>{{ $comment->comment }}</p>
   </div>
   @if(Auth::id() == $comment->user_id)
     <div class="btn-group">
-      <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        menu
-      </button>
+      <i type="button" class="fas fa-ellipsis-v" data-toggle="dropdown"></i>
       <div class="dropdown-menu dropdown-menu-right">
         <a class="dropdown-item" href="{{ route('comments.edit', ['post' => $post, 'comment' => $comment]) }}">編集</a>
         <a class="dropdown-item" data-toggle="modal" data-target="#delete-modal{{ $comment->id }}">削除</a>

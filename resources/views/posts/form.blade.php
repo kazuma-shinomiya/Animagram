@@ -8,6 +8,7 @@
 <div class="form-group mb-3">
   <label for="post-image" class="form-label">Photo</label>
   <input type="file" class="form-control" id="post-image" name="image">
+  {{ $errors->first('image') }}
 </div>
 <div class="form-group mb-3">
   <label for="post-category" class="form-label">Category</label>
