@@ -7,6 +7,7 @@ use App\Category;
 use Storage;
 use App\Http\Requests\PostRequest;
 use Illuminate\Http\Request;
+use App\Libraries\RankingService;
 
 class PostController extends Controller
 {
@@ -24,6 +25,13 @@ class PostController extends Controller
 
     public function create(){
         return view('posts.create');
+    }
+    
+    public function show(Post $post){
+        $comments = $post->comments->sortByDesc('created_at');
+        $ranking = new RankingService;
+        $ranking->incrementViewRanking($post->id);
+        return view('posts.show', compact('post', 'comments'));
     }
 
     public function store(PostRequest $request, Post $post){
@@ -69,5 +77,12 @@ class PostController extends Controller
     public function unlike(Request $request, Post $post){
         $post->likes()->detach($request->user()->id);
         return redirect()->route('posts.index');
+    }
+    
+    public function ranking(Post $post){
+        $ranking = new RankingService;
+        $results = $ranking->getRankingAll();
+        $posts_ranking = $post->getPostRanking($results);
+        return view('posts.ranking', compact('posts_ranking'));
     }
 }

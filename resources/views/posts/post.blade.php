@@ -25,7 +25,7 @@
                 <form method="POST" action="{{ route('posts.destroy', ['post' => $post]) }}">
                   @method('DELETE')
                   @csrf
-                  <div class="modal-body">
+                  <div class="modal-body text-left">
                       <label>データを削除しますか？</label>
                   </div>
                   <div class="modal-footer">
@@ -70,7 +70,7 @@
       @endif
     
     
-      <a href="{{ route('comments.index', ['post' => $post]) }}" class="btn mr-3">
+      <a href="{{ route('posts.show', ['post' => $post]) }}" class="btn mr-3">
         <i class="far fa-comment"></i>
       </a>
     </div>

@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Post extends Model
 {
@@ -51,5 +52,14 @@ class Post extends Model
         
         return $query->where('body', 'LIKE', "%$keyword%");
     } 
+    
+    public function getPostRanking(Array $results){
+        $posts_ids = array_keys($results);
+        $ids_order = implode(',', $posts_ids);
+        $post_ranking = $this->whereIn('id', $posts_ids)
+                            ->orderByRaw(DB::raw("FIELD(id, $ids_order)"))
+                            ->get();
+        return $post_ranking;
+    }
 
 }
