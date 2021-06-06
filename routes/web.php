@@ -11,7 +11,6 @@ Route::get('/posts/{post}/unlike', 'PostController@unlike')->name('posts.unlike'
 
 Route::resource('/posts/{post}/comments', 'CommentController')->except(['index', 'show', 'create'])->middleware('auth');
 
-
 Route::get('/users/{name}', 'UserController@show')->name('users.show');
 Route::get('/users/{name}/edit', 'UserController@edit')->name('users.edit')->middleware('auth');
 Route::put('/users/{name}', 'UserController@update')->name('users.update')->middleware('auth');
