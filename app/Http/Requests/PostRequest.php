@@ -25,7 +25,17 @@ class PostRequest extends FormRequest
     {
         return [
             'post.body' => 'required|string|max:4000',
-            'image' => 'required|file|image|max:1024'
+            'image' => 'required|file|image|max:1024',
+            'tags' => 'json|regex:/^(?!.*\s).+$/u|regex:/^(?!.*\/).*$/u'
         ];
+    }
+    
+    public function passedValidation()
+    {
+        $this->tags = collect(json_decode($this->tags))
+                        ->slice(0, 5)
+                        ->map(function($requestTag){
+                            return $requestTag->text;
+                        });
     }
 }

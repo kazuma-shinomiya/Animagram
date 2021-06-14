@@ -11,6 +11,13 @@
   {{ $errors->first('image') }}
 </div>
 <div class="form-group mb-3">
+  <post-tags-input
+    :initial-tags='@json($tagNames ?? [])'
+    :autocomplete-items='@json($allTagNames ?? [])'
+  >
+  </post-tags-input>
+</div>
+<div class="form-group mb-3">
   <label for="post-category" class="form-label">Category</label>
   <select id="post-category" class="custom-select form-control" name="post[category_id]">
     @foreach ($categories as $category)

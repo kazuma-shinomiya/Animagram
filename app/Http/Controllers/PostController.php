@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Post;
 use App\Category;
+use App\Tag;
 use Storage;
 use App\Http\Requests\PostRequest;
 use Illuminate\Http\Request;
@@ -24,7 +25,11 @@ class PostController extends Controller
     }
 
     public function create(){
-        return view('posts.create');
+        $allTagNames = Tag::all()->map(function($tag) {
+            return ['text' => $tag->name];
+        });
+        
+        return view('posts.create', compact('allTagNames'));
     }
     
     public function show(Post $post){
@@ -43,11 +48,25 @@ class PostController extends Controller
         }
         $post->user_id = $request->user()->id;
         $post->save();
+        
+        $request->tags->each(function($tagName) use ($post) {
+            $tag = Tag::firstOrCreate(['name' => $tagName]);
+            $post->tags()->attach($tag);
+        });
+        
         return redirect()->route('posts.index');
     }
 
     public function edit(Post $post){
-        return view('posts.edit', compact('post'));
+        $tagNames = $post->tags->map(function($tag) {
+           return ['text' => $tag->name]; 
+        });
+        
+        $allTagNames = Tag::all()->map(function($tag) {
+            return ['text' => $tag->name];
+        });
+        
+        return view('posts.edit', compact('post', 'tagNames', 'allTagNames'));
     }
 
     public function update(PostRequest $request, Post $post){
@@ -58,6 +77,12 @@ class PostController extends Controller
             $post->image_url = Storage::disk('s3')->url($path);
         }
         $post->save();
+        
+        $post->tags()->detach();
+        $request->tags->each(function($tagName) use ($post) {
+            $tag = Tag::firstOrCreate(['name' => $tagName]);
+            $post->tags()->attach($tag);
+        });
         return redirect()->route('posts.index');
     }
 

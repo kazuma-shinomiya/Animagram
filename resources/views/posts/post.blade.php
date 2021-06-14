@@ -67,4 +67,12 @@
     </div>
   </div>
   
+  <div>
+    @foreach($post->tags as $tag)
+      <a class="text-muted ml-3 mb-4">
+        {{ $tag->hashtag }}
+      </a>
+    @endforeach
+  </div>
+  
 </div>
