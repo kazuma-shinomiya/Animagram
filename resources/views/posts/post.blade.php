@@ -53,23 +53,14 @@
       </a>
     </div>
     <div class="col-6 text-right">
-      @if($post->isLikedBy(Auth::user()))
-        <a href="{{ route('posts.unlike', $post) }}" class="btn btn-success btn-sm">
-          いいね
-          <span class="badge">
-            {{ $post->likes()->count() }}
-          </span>
-        </a>
-      @else
-        <a href="{{ route('posts.like', $post) }}" class="btn btn-secondary btn-sm">
-          いいね
-          <span class="badge">
-            {{ $post->likes()->count() }}
-          </span>
-        </a>
-      @endif
-    
-    
+      <post-like
+        :initial-is-liked-by="@json($post->isLikedBy(Auth::user()))"
+        :initial-count-likes="@json($post->likes()->count())"
+        :authorized="@json(Auth::check())"
+        endpoint="{{ route('posts.like', $post) }}"
+      >
+      </post-like>
+      
       <a href="{{ route('posts.show', ['post' => $post]) }}" class="btn mr-3">
         <i class="far fa-comment"></i>
       </a>
