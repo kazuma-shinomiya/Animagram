@@ -3,6 +3,7 @@ require('./bootstrap');
 import './bootstrap'
 import Vue from 'vue'
 import PostLike from './components/PostLike'
+import FollowButton from './components/FollowButton'
 
 window.Vue = require('vue');
 
@@ -13,6 +14,7 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 const app = new Vue({
     el: '#app',
     components: {
-        PostLike
+        PostLike,
+        FollowButton
     }
 });
