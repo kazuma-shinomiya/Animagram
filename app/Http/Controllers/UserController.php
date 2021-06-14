@@ -48,8 +48,8 @@ class UserController extends Controller
 
         $request->user()->followings()->detach($user);
         $request->user()->followings()->attach($user);
-
-        return redirect()->route('users.show', $user->name);
+        
+        return ['name' => $name];
     }
 
     public function unfollow(Request $request, string $name){
@@ -61,7 +61,7 @@ class UserController extends Controller
 
         $request->user()->followings()->detach($user);
 
-        return redirect()->route('users.show', $user->name);
+        return ['name' => $name];
     }
 
     public function followings(string $name){

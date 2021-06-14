@@ -30,20 +30,13 @@
       </a>
     </div>
     
-    
-    
     @if(Auth::id() != $user->id)
-      <div>
-        @if($user->isFollowedBy(Auth::user()))
-          <a href="{{ route('users.unfollow', ['name' => $user->name]) }}" class="btn btn-success btn-sm">
-            フォロー中
-          </a>
-        @else
-          <a href="{{ route('users.follow', ['name' => $user->name]) }}" class="btn btn-secondary btn-sm">
-            フォローする
-          </a>
-        @endif
-      </div>
+      <follow-button 
+        :initial-is-followed-by="@json($user->isFollowedBy(Auth::user()))"
+        :authorized="@json(Auth::check())"
+        endpoint="{{ route('users.follow', ['name' => $user->name]) }}"
+      >
+      </follow-button> 
     @endif
   </div>
 </div>
