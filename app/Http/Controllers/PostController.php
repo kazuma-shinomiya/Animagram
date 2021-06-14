@@ -71,12 +71,18 @@ class PostController extends Controller
     public function like(Request $request, Post $post){
         $post->likes()->detach($request->user()->id);
         $post->likes()->attach($request->user()->id);
-        return redirect()->route('posts.index');
+        return [
+            'id' => $post->id,
+            'countLikes' => $post->likes()->count()
+        ];
     }
 
     public function unlike(Request $request, Post $post){
         $post->likes()->detach($request->user()->id);
-        return redirect()->route('posts.index');
+        return [
+            'id' => $post->id,
+            'countLikes' => $post->likes()->count()
+        ];
     }
     
     public function ranking(Post $post){
