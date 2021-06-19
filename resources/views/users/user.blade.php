@@ -36,7 +36,9 @@
         :authorized="@json(Auth::check())"
         endpoint="{{ route('users.follow', ['name' => $user->name]) }}"
       >
-      </follow-button> 
+      </follow-button>
+      
+      <a href="">チャット</a>
     @endif
   </div>
 </div>
